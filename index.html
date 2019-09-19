@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
+</head>
+<!-- <script src="jquery-3.4.1.js" /> -->
+<script
+  src="https://code.jquery.com/jquery-3.4.1.slim.js"
+  integrity="sha256-BTlTdQO9/fascB1drekrDVkaKd9PkwBymMlHOiG+qLI="
+  crossorigin="anonymous"></script>
+<script type="text/javascript">
+ 
+</script>
+
+<script type="text/javascript">
+    function addMappings() {
+        let s = "";
+        for (i = 0; i < 26; i++) { 
+            s +=String.fromCharCode(65+i)+"<input type=\"text\" id=\"letter"+i+"\" style=\"width:1em;font-weight: 900;\" value = \"_\"/>";
+        }
+        $("#mappings").append("<div>"+s+"</div>");
+    }
+    $(window).on("load", function(){
+        var i;
+        s = "";
+        
+        addMappings();
+
+        d = new Map();
+        d.set(" ", " ");
+        d.set("-", "-");
+        d.set("\n", "\n");
+        d.set("'", "'");
+        d.set(".", ".");
+        d.set(",", ",");
+
+        for (i = 0; i < 26; i++) { 
+                    d.set(String.fromCharCode(65+i), "_");     
+        }
+        console.log(d);
+
+        function solve(d, s) { 
+            var res = "";
+            for (i=0; i < s.length; i++) {
+                res += d.get(s[i]);
+            }
+            return res;
+        }
+
+        function updateMap(d) {
+            for (i = 0; i < 26; i++) { 
+                d.set(String.fromCharCode(65+i), $("#letter"+i)[0].value);
+            }
+        }
+
+        function letters_assigned(d) {
+            res = []
+            for (let letter of d.values()) {
+                if (letter != "_")
+                    res += letter
+
+            }
+
+            return  Array.from(res).sort();
+        }
+
+        function letters_left(d) {
+            res = new Set(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U','V', 'X', 'Y', 'Z']);
+
+            for (let letter of d.values()) {
+                if (letter != "_" && res.has(letter.toUpperCase()))
+                    res.delete(letter.toUpperCase());
+
+            }
+
+            return Array.from(res).sort();
+        }
+
+        // var that = this;
+        $("#refresh").click(function(event) {
+            console.log("started refresh");
+            updateMap(d);
+            s = $("#intext").val();
+            s = s.toUpperCase();
+            s = solve(d, s);
+            $("#outtext").val(s);
+            
+            $("#letters_assigned")[0].value=letters_assigned(d);
+            $("#letters_left")[0].value=letters_left(d);
+            event.stopPropagation();
+            console.log("finished refresh");
+        });
+        
+        $("#clear").click(function(event) {
+            $("#intext").val("");
+            $("#outtext").val("");
+            // location.reload();
+        });
+        $("#reset").click(function(event) {
+            $("#mappings").empty();
+            addMappings();
+            // location.reload();
+        });
+    });
+</script>
+<body>
+    <h1> Cryptoquote Solver Helper</h1>
+        <button id="reset" class="pure-button">reset</button>
+        <div id="mappings"></div>
+        <form class="pure-form" style="font-family: courier">
+            <textarea id="intext" class="pure-input-2-3" placeholder="input text"></textarea>
+            <textarea id="outtext" class="pure-input-2-3" placeholder="press refresh for the results to appear here"></textarea>
+        <p>letters left: <input type="text" id="letters_left" class="pure-input-1-4"/></p>
+        <p>letters assigned:<input type="text" id="letters_assigned" class="pure-input-1-3"/></p>
+        </form>
+        <button id="refresh" class="pure-button pure-button-primary">refresh</button>
+        <button id="clear" class="pure-button">clear</button>
+        <h3>Letter Frequency</h3>
+        <ul>
+            <li>The most commonly used letters of the English language are <strong>e, t, a, i, o, n, s, h, and r</strong>.</li>
+            <li>The letters that are most commonly found at the beginning of words are <strong>t, a, o, d, and w</strong>.</li>
+            <li>The letters that are most commonly found at the end of words are <strong>e, s, d, and t</strong>.</li>
+        </ul>
+        <h3>Word Frequency</h3>
+            <ul>
+                <li>Short words provide useful clues. One-letter words are either <strong><em>a </em></strong>&nbsp;or<strong><em> </em></strong>I.</li>
+                <li>The most common two-letter words are <strong><em>to, of, in, it, is, as, at, be, we, he, so, on, an, or, do, if, up, by, and my</em></strong>.</li>
+                <li>The most common three-letter words are <strong><em>the, and, are,for, not, but, had, has, was, all, any, one, man, out, you, his, her, and can</em></strong>.</li>
+                <li>The most common four-letter words are <strong><em>that, with, have, this, will, your, from, they, want, been, good,
+                            much, some, and very.</em></strong></li>
+                </ul>
+                <h3>Word Endings</h3>
+                <ul>
+                    <li>The most. common word endings are <strong><em>-ed, -ing, -ion, -ist, -ous, -ent, -able, -ment, -tion, -ight, and
+                                -ance</em></strong>.</li>
+                </ul>
+                <h3>Doubled Letters</h3>
+                <ul>
+                    <li>The most frequent double-letter combinations are <strong><em>ee, ll, ss, oo, tt,ff, rr, nn, pp, and
+                                cc</em></strong>.</li>
+                    <li>The double letters that occur most commonly at the end of words are <strong><em>ee, ll, ss, and
+                                ff</em></strong>.</li>
+                </ul>
+                <h3>Punctuation</h3>
+                <ul>
+                    <li>A comma is often followed by <strong><em>but, and, or who</em></strong>.</li>
+                    <li>A question often begins with <strong><em>why, how, who, was, did, what, where, or which.</em></strong></li>
+                    <li>Two words that often precede quotation marks are <em>said and says</em>.</li>
+                    <li>Two letters that usually follow an apostrophe are <strong><em>t and s.</em></strong></li>
+                </ul>
+ </body>
+</html>
