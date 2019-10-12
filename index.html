@@ -48,6 +48,9 @@
         d.set(".", ".");
         d.set(",", ",");
         d.set("'", "'");
+        d.set("!", "!");
+        d.set('`', '`');
+        d.set(String.fromCharCode(0027), String.fromCharCode(0027));
 
         for (i = 0; i < 26; i++) { 
                     d.set(String.fromCharCode(65+i), "_");     
