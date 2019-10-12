@@ -47,6 +47,7 @@
         d.set("'", "'");
         d.set(".", ".");
         d.set(",", ",");
+        d.set("'", "'");
 
         for (i = 0; i < 26; i++) { 
                     d.set(String.fromCharCode(65+i), "_");     
@@ -122,10 +123,10 @@
         <button id="reset" class="pure-button">reset</button>
         <div id="mappings"></div>
         <form class="pure-form" style="font-family: courier">
-            <textarea id="intext" class="pure-input-2-3" placeholder="input text"></textarea>
-            <textarea id="outtext" class="pure-input-2-3" placeholder="press refresh for the results to appear here"></textarea>
-        <p>letters left: <input type="text" id="letters_left" class="pure-input-1-4"/></p>
-        <p>letters assigned:<input type="text" id="letters_assigned" class="pure-input-1-3"/></p>
+            <textarea id="intext" class="pure-input-2-3" placeholder="input text" rows=4></textarea>
+            <textarea id="outtext" class="pure-input-2-3" rows=4 placeholder="press refresh for the results to appear here"></textarea>
+        <p>letters left: <input type="text" id="letters_left" class="pure-input-2-3"/></p>
+        <p>letters assigned:<input type="text" id="letters_assigned" class="pure-input-2-3"/></p>
         </form>
         <button id="refresh" class="pure-button pure-button-primary">refresh</button>
         <button id="clear" class="pure-button">clear</button>
